@@ -1,3 +1,5 @@
+Open two terminal and run react and django simantalinously
+
 ## run react.js 
 
 cd frontend 
