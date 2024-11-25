@@ -3,7 +3,8 @@ from django.contrib.auth.models import User
 
 
 class Portfolio(models.Model):
-    portfolio_name = models.CharField(User, on_delete=models.CASCADE,unique=True,primary_key = True)
+    
+    portfolio_name = models.CharField(max_length=100,unique=True,primary_key = True)
     portfolio_code = models.CharField(max_length=100, unique=True)
     school_number = models.CharField(max_length=100, unique=True)
     full_name = models.CharField(max_length=100)
