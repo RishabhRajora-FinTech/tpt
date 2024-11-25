@@ -18,23 +18,6 @@ class Portfolio(models.Model):
     confirmed = models.CharField(max_length=100)
 
     def __str__(self):
-        return self.portfolio_name.name
+        return self.portfolio_name
 
 
-class Transaction(models.Model):
-    portfolio = models.ForeignKey(Portfolio, on_delete=models.CASCADE)
-    date = models.DateField()
-    asset_name = models.CharField(max_length=100)
-    quantity = models.FloatField()
-    price = models.FloatField()
-
-    def __str__(self):
-        return f"{self.asset_name} - {self.date}"
-
-class POS(models.Model):
-    transaction = models.ForeignKey(Transaction, on_delete=models.CASCADE)
-    pos_date = models.DateField()
-    pos_amount = models.FloatField()
-
-    def __str__(self):
-        return f"POS {self.transaction} on {self.pos_date}"
