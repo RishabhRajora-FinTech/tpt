@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Management</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <style>
+        .container-fluid {
+            padding: 20px;
+        }
+        .box {
+            height: 500px;
+            overflow: auto;
+            margin-bottom: 20px;
+        }
+        .table-responsive {
+            max-height: 450px;
+            overflow: auto;
+        }
+        .form-section {
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .card {
+            height: 100%;
+        }
+        .card-body {
+            overflow: auto;
+            flex-grow: 1;
+        }
+        .header-text {
+            font-size: 32px;
+            font-weight: bold;
+        }
+        .blue-text {
+            color: blue;
+        }
+        .maroon-text {
+            color: maroon;
+        }
+    </style>
+</head>
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12 text-center">
+                <span class="header-text blue-text">C.W.D  </span>
+                <span class="header-text maroon-text">INTERNATIONAL SCHOOL</span>
+            </div>
+        </div>
+        <div class="row">
+            <!-- View Section -->
+            <div class="col-md-6 box">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Portfolios</h2>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Portfolio Name</th>
+                                        <th>Portfolio Code</th>
+                                        <th>School Number</th>
+                                        <th>Full Name</th>
+                                        <th>Portfolio Type</th>
+                                        <th>Status</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="portfolio-table-body">
+                                    <!-- Data will be populated here -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Edit Section -->
+            <div class="col-md-6 box">
+                <div class="card">
+                    <div class="card-header">
+                        <h2>Manage Portfolio</h2>
+                    </div>
+                    <div class="card-body form-section">
+                        <form id="portfolio-form">
+                            <div class="form-group">
+                                <label for="portfolio_name">Portfolio Name</label>
+                                <input type="text" class="form-control" id="portfolio_name" name="portfolio_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="portfolio_code">Portfolio Code</label>
+                                <input type="text" class="form-control" id="portfolio_code" name="portfolio_code" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="school_number">School Number</label>
+                                <input type="text" class="form-control" id="school_number" name="school_number" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="full_name">Full Name</label>
+                                <input type="text" class="form-control" id="full_name" name="full_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="portfolio_type">Portfolio Type</label>
+                                <input type="text" class="form-control" id="portfolio_type" name="portfolio_type" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="status">Status</label>
+                                <input type="text" class="form-control" id="status" name="status" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="type_of_emp">Type of Employee</label>
+                                <input type="text" class="form-control" id="type_of_emp" name="type_of_emp" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="father_name">Father's Name</label>
+                                <input type="text" class="form-control" id="father_name" name="father_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="mother_name">Mother's Name</label>
+                                <input type="text" class="form-control" id="mother_name" name="mother_name" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cusp">CUSP</label>
+                                <input type="text" class="form-control" id="cusp" name="cusp" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="entered_by">Entered By</label>
+                                <input type="text" class="form-control" id="entered_by" name="entered_by" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmed">Confirmed</label>
+                                <input type="text" class="form-control" id="confirmed" name="confirmed" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Save</button>
+                            <button type="button" class="btn btn-secondary" id="clear-form-btn">Clear</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
+    <script>
+        // JavaScript to handle CRUD operations
+        // Fetch, create, update, delete, and display portfolios
+
+        // Fetch portfolios and populate the table
+        function fetchPortfolios() {
+            $.ajax({
+                url: '/api/portfolios/',
+                method: 'GET',
+                success: function(data) {
+                    $('#portfolio-table-body').empty();
+                    data.forEach(function(portfolio) {
+                        $('#portfolio-table-body').append(
+                            `<tr>
+                                <td>${portfolio.portfolio_name}</td>
+                                <td>${portfolio.portfolio_code}</td>
+                                <td>${portfolio.school_number}</td>
+                                <td>${portfolio.full_name}</td>
+                                <td>${portfolio.portfolio_type}</td>
+                                <td>${portfolio.status}</td>
+                                <td>
+                                    <button class="btn btn-warning btn-sm" onclick="editPortfolio('${portfolio.portfolio_name}')">Edit</button>
+                                    <button class="btn btn-danger btn-sm" onclick="deletePortfolio('${portfolio.portfolio_name}')">Delete</button>
+                                </td>
+                            </tr>`
+                        );
+                    });
+                }
+            });
+        }
+
+        // Handle form submission for creating or updating portfolios
+        $('#portfolio-form').on('submit', function(event) {
+            event.preventDefault();
+            const formData = $(this).serialize();
+            $.ajax({
+                url: '/api/portfolios/',
+                method: 'POST',
+                data: formData,
+                success: function() {
+                    fetchPortfolios();
+                    $('#portfolio-form')[0].reset();
+                }
+            });
+        });
+
+        // Edit portfolio
+        function editPortfolio(portfolio_name) {
+            $.ajax({
+                url: `/api/portfolios/${portfolio_name}/`,
+                method: 'GET',
+                success: function(data) {
+                    $('#portfolio_name').val(data.portfolio_name);
+                    $('#portfolio_code').val(data.portfolio_code);
+                    $('#school_number').val(data.school_number);
+                    $('#full_name').val(data.full_name);
+                    $('#portfolio_type').val(data.portfolio_type);
+                    $('#status').val(data.status);
+                    $('#type_of_emp').val(data.type_of_emp);
+                    $('#father_name').val(data.father_name);
+                    $('#mother_name').val(data.mother_name);
+                    $('#cusp').val(data.cusp);
+                    $('#entered_by').val(data.entered_by);
+                    $('#confirmed').val(data.confirmed);
+                }
+            });
+        }
+
+        // Delete portfolio
+        function deletePortfolio(portfolio_name) {
+            $.ajax({
+                url: `/api/portfolios/${portfolio_name}/`,
+                method: 'DELETE',
+                success: function() {
+                    fetchPortfolios();
+                }
+            });
+        }
+
+        // Clear form fields
+        $('#clear-form-btn').on('click', function() {
+            $('#portfolio-form')[0].reset();
+        });
+
+        // Initial fetch of portfolios
+        fetchPortfolios();
+    </script>
+</body>
+</html>

@@ -19,6 +19,7 @@ from django.urls import path, include
 from rest_framework import routers
 from assets import views
 
+
 router = routers.DefaultRouter()
 router.register(r'portfolios', views.PortfolioViewSet)
 router.register(r'transactions', views.TransactionViewSet)
@@ -27,4 +28,6 @@ router.register(r'pos', views.POSViewSet)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
+    path('', views.index, name='index'),
+    
 ]
