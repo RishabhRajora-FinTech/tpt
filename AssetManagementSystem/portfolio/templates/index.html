@@ -40,13 +40,16 @@
         .maroon-text {
             color: maroon;
         }
+        .search-box {
+            margin-bottom: 20px;
+        }
     </style>
 </head>
 <body>
     <div class="container-fluid">
         <div class="row">
             <div class="col-12 text-center">
-                <span class="header-text blue-text">C.W.D  </span>
+                <span class="header-text blue-text">C.W.D</span>
                 <span class="header-text maroon-text">INTERNATIONAL SCHOOL</span>
             </div>
         </div>
@@ -56,6 +59,7 @@
                 <div class="card">
                     <div class="card-header">
                         <h2>Portfolios</h2>
+                        <input type="text" id="search-box" class="form-control search-box" placeholder="Search...">
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -145,7 +149,7 @@
     </div>
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
     <script>
-        // JavaScript to handle CRUD operations
+        // JavaScript to handle CRUD operations and search functionality
         // Fetch, create, update, delete, and display portfolios
 
         // Fetch portfolios and populate the table
@@ -226,6 +230,16 @@
         // Clear form fields
         $('#clear-form-btn').on('click', function() {
             $('#portfolio-form')[0].reset();
+        });
+
+        // Search functionality
+        $('#search-box').on('keyup', function() {
+            const query = $(this).val().toLowerCase();
+            $('#portfolio-table-body tr').each(function() {
+                const row = $(this);
+                const text = row.text().toLowerCase();
+                row.toggle(text.indexOf(query) !== -1);
+            });
         });
 
         // Initial fetch of portfolios

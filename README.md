@@ -77,3 +77,7 @@ To reset your Django project and start from an initial migration, you can follow
 This will completely reset your Django project and apply the initial migrations. Remember to back up any important data before you start this process.
 
 Feel free to reach out if you need further assistance or if you encounter any issues!
+
+## data is uploaded successfully 
+keep the 1st column as demo
+demo	portfolio_name	portfolio_code	school_number	full_name	portfolio_type	status	type_of_emp	father_name	mother_name	cusp	entered_by	confirmed

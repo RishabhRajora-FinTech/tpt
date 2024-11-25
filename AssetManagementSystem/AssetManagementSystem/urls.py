@@ -27,5 +27,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include(router.urls)),
     path('', views.index, name='index'),
+    path('data_import/', include('data_import.urls')),
     
 ]
