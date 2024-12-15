@@ -1,10 +1,8 @@
 from django.db import models
 from django.contrib.auth.models import User
 
-
 class Portfolio(models.Model):
-    
-    portfolio_name = models.CharField(max_length=100,unique=True,primary_key = True)
+    portfolio_name = models.CharField(max_length=100, unique=True, primary_key=True)
     portfolio_code = models.CharField(max_length=100, unique=True)
     school_number = models.CharField(max_length=100, unique=True)
     full_name = models.CharField(max_length=100)
@@ -19,7 +17,6 @@ class Portfolio(models.Model):
 
     def __str__(self):
         return self.portfolio_name
-
 
 class Transaction(models.Model):
     fund = models.ForeignKey(Portfolio, to_field='portfolio_code', on_delete=models.CASCADE)
@@ -45,4 +42,3 @@ class Transaction(models.Model):
 
     def __str__(self):
         return f"Transaction {self.invnum} for {self.fund.portfolio_code}"
-
